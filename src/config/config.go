@@ -4,6 +4,8 @@ import (
 	"errors"
 	"log"
 	"os"
+	"time"
+
 	"github.com/spf13/viper"
 )
 
@@ -11,6 +13,17 @@ type Config struct {
 	Server   ServerConfig
 	Postgres PostgresConfig
 	Redis    RedisConfig
+	Password PasswordConfig
+	Otp OtpConfig
+}
+
+type PasswordConfig struct{
+	IncludeChars bool
+	IncludeDigits bool
+	MinLength int
+	MaxLength int
+	IncludeUppercase bool
+	IncludeLowercase bool
 }
 
 type ServerConfig struct {
@@ -25,6 +38,12 @@ type PostgresConfig struct {
 	Password string
 	DbName   string
 	SslMode  bool
+}
+
+type OtpConfig struct {
+	ExpireTime time.Duration
+	Digits     int
+	Limiter    time.Duration
 }
 
 type RedisConfig struct {
@@ -44,17 +63,16 @@ func GetConfig() *Config {
 		log.Fatalf("Error in load config: %v", err)
 	}
 
-	cfg, err := ParsConfig(v)
+	cfg, err := ParseConfig(v)
 
 	if err != nil {
 		log.Fatalf("Error in parse config: %v", err)
 	}
 
 	return cfg
-
 }
 
-func ParsConfig(v *viper.Viper) (*Config, error) {
+func ParseConfig(v *viper.Viper) (*Config, error) {
 	var cfg Config
 	err := v.Unmarshal(&cfg)
 	if err != nil {
