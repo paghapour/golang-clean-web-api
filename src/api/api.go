@@ -12,19 +12,20 @@ import (
 	"github.com/paghapour/golang-clean-web-api/config"
 )
 
-func InitServer() {
-	cfg := config.GetConfig()
+func InitServer(cfg *config.Config) {
 	r := gin.New()
 
-	val, ok := binding.Validator.Engine().(*validator.Validate)
-	if ok {
-		val.RegisterValidation("mobile", validation.IranianMobileNumberValidator, true)
-		val.RegisterValidation("password", validation.PasswordValidator, true)
-	}
+	RegisterValidator()
 
 	r.Use(middlewares.Cors(cfg))
 	r.Use(gin.Logger(), gin.Recovery(), /*middlewares.TestMiddleware()*/ middlewares.LimitByRequest())
 
+	RegisterRoutes(r)
+
+	r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
+}
+
+func RegisterRoutes(r *gin.Engine) {
 	api := r.Group("/api")
 	v1 := api.Group("/v1")
 	{
@@ -41,6 +42,12 @@ func InitServer() {
 
 		routers.Health(health)
 	}
+}
 
-	r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
+func RegisterValidator() {
+	val, ok := binding.Validator.Engine().(*validator.Validate)
+	if ok {
+		val.RegisterValidation("mobile", validation.IranianMobileNumberValidator, true)
+		val.RegisterValidation("password", validation.PasswordValidator, true)
+	}
 }

@@ -15,14 +15,14 @@ type Config struct {
 	Redis    RedisConfig
 	Password PasswordConfig
 	Cors     CorsConfig
-	Otp OtpConfig
+	Otp      OtpConfig
 }
 
-type PasswordConfig struct{
-	IncludeChars bool
-	IncludeDigits bool
-	MinLength int
-	MaxLength int
+type PasswordConfig struct {
+	IncludeChars     bool
+	IncludeDigits    bool
+	MinLength        int
+	MaxLength        int
 	IncludeUppercase bool
 	IncludeLowercase bool
 }
@@ -48,16 +48,19 @@ type OtpConfig struct {
 }
 
 type RedisConfig struct {
-	Host               string
-	Port               string
-	Password           string
-	DB                 string
-	MinIdleConnections int
-	PoolSize           int
-	PoolTimeout        int
+	Host        string
+	Port        string
+	Password    string
+	DB          string
+	DialTimeout time.Duration
+	PoolSize    int
+	PoolTimeout time.Duration
+	ReadTimeout time.Duration
+	WriteTimeout time.Duration
+	IdleCheckFrequency time.Duration
 }
 
-type CorsConfig struct{
+type CorsConfig struct {
 	AllowOrigins string
 }
 
