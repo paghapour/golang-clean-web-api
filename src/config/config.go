@@ -38,7 +38,10 @@ type PostgresConfig struct {
 	User     string
 	Password string
 	DbName   string
-	SslMode  bool
+	SSLMode  string
+	MaxIdleConns int
+	MaxOpenConns int
+	ConnMaxLifetime time.Duration
 }
 
 type OtpConfig struct {
