@@ -1,6 +1,6 @@
 Server:
  Port: 5005
- RunMode: debug
+ runMode: debug
 logger:
   filepath: ../logs/logs.log
   Encoding: json
@@ -35,3 +35,7 @@ password:
  maxLength: 20
  includeUppercase : true
  includeLowercase : true
+otp:
+  expireTime: 120
+  digits: 6
+  limiter: 100 

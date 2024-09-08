@@ -14,7 +14,9 @@ postgres:
   password: admin
   dbName: car_sale_db
   sslMode: disable
-
+  maxIdleConns: 15
+  maxOpenConns: 100
+  connMaxLifetime: 5
 redis:
   host: redis_container
   port: 6379
@@ -30,6 +32,10 @@ password:
   includeChars: true
   includeDigits: true
   minLength: 6
-  maxLength: 20
+  maxLength: 64
   includeUppercase: true
   includeLowercase: true
+otp:
+  expireTime: 120
+  digits: 6
+  limiter: 100

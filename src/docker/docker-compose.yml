@@ -1,4 +1,4 @@
-version: '3.7'
+version: '4.20.1'
 
 services:
   postgres:
@@ -8,9 +8,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
       POSTGRES_dB: car_sale_db
-      PGDATA: /data/postgres
+      PGDATA: /data/postgres/postgres
     volumes:
-      - postgres:/data/postgres
+      - postgres:/data/postgres/postgres
     ports:
       - "5432:5432"
     networks:
@@ -24,7 +24,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: pouriaaghapour@gmail.com
       PGADMIN_DEFAULT_PASSWORD: 123456
     volumes:
-      - pgadmin:/var/lib/pgadmin
+      - pgadmin:/var/lib/pgadmin/pgadmin
     ports:
       - "8090:80"
     networks:
@@ -32,7 +32,6 @@ services:
     restart: unless-stopped
     depends_on:
       - postgres
-
   redis:
     image: redis:latest
     container_name: redis_container

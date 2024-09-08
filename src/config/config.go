@@ -18,18 +18,9 @@ type Config struct {
 	Otp      OtpConfig
 }
 
-type PasswordConfig struct {
-	IncludeChars     bool
-	IncludeDigits    bool
-	MinLength        int
-	MaxLength        int
-	IncludeUppercase bool
-	IncludeLowercase bool
-}
-
 type ServerConfig struct {
 	Port    string
-	runMode string
+	RunMode string
 }
 
 type PostgresConfig struct {
@@ -44,11 +35,6 @@ type PostgresConfig struct {
 	ConnMaxLifetime time.Duration
 }
 
-type OtpConfig struct {
-	ExpireTime time.Duration
-	Digits     int
-	Limiter    time.Duration
-}
 
 type RedisConfig struct {
 	Host        string
@@ -56,16 +42,33 @@ type RedisConfig struct {
 	Password    string
 	DB          string
 	DialTimeout time.Duration
-	PoolSize    int
-	PoolTimeout time.Duration
 	ReadTimeout time.Duration
 	WriteTimeout time.Duration
 	IdleCheckFrequency time.Duration
+	PoolSize    int
+	PoolTimeout time.Duration
 }
 
+type PasswordConfig struct {
+	IncludeChars     bool
+	IncludeDigits    bool
+	MinLength        int
+	MaxLength        int
+	IncludeUppercase bool
+	IncludeLowercase bool
+}
 type CorsConfig struct {
 	AllowOrigins string
 }
+type OtpConfig struct {
+	ExpireTime time.Duration
+	Digits     int
+	Limiter    time.Duration
+}
+
+
+
+
 
 func GetConfig() *Config {
 	cfgPath := getConfigPath(os.Getenv("APP_ENV"))

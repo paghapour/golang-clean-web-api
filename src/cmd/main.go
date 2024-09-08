@@ -11,14 +11,15 @@ import (
 
 func main() {
 	cfg := config.GetConfig()
+	
 	err := cache.InitRedis(cfg)
 	defer cache.CloseRedis()
 	if err != nil{
 		log.Fatal(err)
 	}
 
-	err = db.InitDb(cfg)
-	defer db.CloseDb()
+	err = database.InitDb(cfg)
+	defer database.CloseDb()
 	if err != nil{
 		log.Fatal(err)
 	}
