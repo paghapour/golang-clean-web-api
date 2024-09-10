@@ -2,24 +2,33 @@ package logging
 
 import "github.com/paghapour/golang-clean-web-api/config"
 
-type Logger interface{
+type Logger interface {
 	Init()
 
-	Info(Category, SubCategory, msg string, extra map[ExtraKey]interface{})
+	Debug(cat Category, sub SubCategory, msg string, extra map[ExtraKey]interface{})
+	Debugf(template string, args ...interface{})
+
+	Info(cat Category, sub SubCategory, msg string, extra map[ExtraKey]interface{})
 	Infof(template string, args ...interface{})
 
-	Warn(Category, SubCategory, msg string, extra map[ExtraKey]interface{})
+	Warn(cat Category, sub SubCategory, msg string, extra map[ExtraKey]interface{})
 	Warnf(template string, args ...interface{})
 
-	Error(err error, cat Category, SubCategory, msg string, extra map[ExtraKey]interface{})
-	Errorf(err error, template string, args ...interface{})
+	Error(cat Category, sub SubCategory, msg string, extra map[ExtraKey]interface{})
+	Errorf(template string, args ...interface{})
 
-	Fatal(err error, cat Category, SubCategory, msg string, extra map[ExtraKey]interface{})
-	Fatalf(err error, template string, args ...interface{})
+	Fatal(cat Category, sub SubCategory, msg string, extra map[ExtraKey]interface{})
+	Fatalf(template string, args ...interface{})
 }
 
-func NewLogger(cfg *config.Config) Logger{
-	return nil
+func NewLogger(cfg *config.Config) Logger {
+	if cfg.Logger.Logger == "zap"{
+		return newZapLogger(cfg)
+	}else if cfg.Logger.Logger == "zerolog"{
+		return newZeroLogger(cfg)
+	}
+	panic("logger not supported")
+	
 }
 
 // file <- filebeat -> elasticsearch -> kibana

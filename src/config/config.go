@@ -16,12 +16,14 @@ type Config struct {
 	Password PasswordConfig
 	Cors     CorsConfig
 	Otp      OtpConfig
+	Logger LoggerConfig
 }
 
 type LoggerConfig struct {
 	Filepath string
 	Encoding string
 	Level string
+	Logger string
 }
 
 type ServerConfig struct {
