@@ -3,7 +3,7 @@ Server:
  runMode: debug
 logger:
   filepath: ../logs/logs.log
-  Encoding: json
+  encoding: json
   level: debug
 cors:
   allowOrigins: "*"

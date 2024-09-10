@@ -18,35 +18,40 @@ type Config struct {
 	Otp      OtpConfig
 }
 
+type LoggerConfig struct {
+	Filepath string
+	Encoding string
+	Level string
+}
+
 type ServerConfig struct {
 	Port    string
 	RunMode string
 }
 
 type PostgresConfig struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	DbName   string
-	SSLMode  string
-	MaxIdleConns int
-	MaxOpenConns int
+	Host            string
+	Port            string
+	User            string
+	Password        string
+	DbName          string
+	SSLMode         string
+	MaxIdleConns    int
+	MaxOpenConns    int
 	ConnMaxLifetime time.Duration
 }
 
-
 type RedisConfig struct {
-	Host        string
-	Port        string
-	Password    string
-	DB          string
-	DialTimeout time.Duration
-	ReadTimeout time.Duration
-	WriteTimeout time.Duration
+	Host               string
+	Port               string
+	Password           string
+	DB                 string
+	DialTimeout        time.Duration
+	ReadTimeout        time.Duration
+	WriteTimeout       time.Duration
 	IdleCheckFrequency time.Duration
-	PoolSize    int
-	PoolTimeout time.Duration
+	PoolSize           int
+	PoolTimeout        time.Duration
 }
 
 type PasswordConfig struct {
@@ -65,10 +70,6 @@ type OtpConfig struct {
 	Digits     int
 	Limiter    time.Duration
 }
-
-
-
-
 
 func GetConfig() *Config {
 	cfgPath := getConfigPath(os.Getenv("APP_ENV"))
