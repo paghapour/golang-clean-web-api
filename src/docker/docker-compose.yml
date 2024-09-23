@@ -1,4 +1,4 @@
-version: '4.20.1'
+version: '3.7'
 
 services:
   ####################### SETUP #######################
@@ -21,7 +21,7 @@ services:
       - webapi_network
     depends_on:
       - elasticsearch
-      
+
   ####################### ELK #######################
   elasticsearch:
     build:
@@ -85,23 +85,24 @@ services:
       - webapi_network
     depends_on:
       - elasticsearch
-  ####################### POSTGRES #######################   
+
+  ####################### POSTGRES #######################
   postgres:
     image: postgres
     container_name: postgres_container
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
-      POSTGRES_dB: car_sale_db
-      PGDATA: /data/postgres/postgres
+      POSTGRES_DB: car_sale_db
+      PGDATA: /data/postgres
     volumes:
-      - postgres:/data/postgres/postgres
+      - postgres:/data/postgres
     ports:
       - "5432:5432"
     networks:
       - webapi_network
     restart: unless-stopped
-  ####################### PGADMIN #######################   
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin_container
@@ -109,7 +110,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: pouriaaghapour@gmail.com
       PGADMIN_DEFAULT_PASSWORD: 123456
     volumes:
-      - pgadmin:/var/lib/pgadmin/pgadmin
+      - pgadmin:/var/lib/pgadmin
     ports:
       - "8090:80"
     networks:
@@ -117,21 +118,21 @@ services:
     restart: unless-stopped
     depends_on:
       - postgres
-  ####################### REDIS #######################   
+
+  ####################### REDIS #######################
   redis:
     image: redis:latest
     container_name: redis_container
-    command: ["redis-server", "/etc/redis/redis.conf"]
-    volumes: 
+    command: [ "redis-server", "/etc/redis/redis.conf" ]
+    volumes:
       - ./redis/redis.conf:/etc/redis/redis.conf
-      - redis:/etc/redis.conf
-      - redis:/data
+      - redis:/etc/redis
     ports:
       - "6379:6379"
     networks:
       - webapi_network
 
-
+####################### VOLUME AND NETWORKS #######################
 volumes:
   postgres:
   pgadmin:
