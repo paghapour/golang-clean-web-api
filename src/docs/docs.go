@@ -15,6 +15,75 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/v1/health/": {
+            "get": {
+                "description": "Health Check",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Health Check",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_paghapour_golang-clean-web-api_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_paghapour_golang-clean-web-api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/test/binder/body": {
+            "post": {
+                "description": "BodyBinder",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Test"
+                ],
+                "summary": "BodyBinder",
+                "parameters": [
+                    {
+                        "description": "person data",
+                        "name": "person",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api_handlers.personData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_paghapour_golang-clean-web-api_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_paghapour_golang-clean-web-api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/test/user/{id}": {
             "get": {
                 "description": "UserById",
@@ -41,13 +110,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_paghapour_golang-clean-web-api_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_paghapour_golang-clean-web-api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -55,7 +124,32 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "helper.BaseHttpResponse": {
+        "api_handlers.personData": {
+            "type": "object",
+            "required": [
+                "first_name",
+                "last_name",
+                "mobile_number"
+            ],
+            "properties": {
+                "first_name": {
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 4
+                },
+                "last_name": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 6
+                },
+                "mobile_number": {
+                    "type": "string",
+                    "maxLength": 11,
+                    "minLength": 11
+                }
+            }
+        },
+        "github_com_paghapour_golang-clean-web-api_api_helper.BaseHttpResponse": {
             "type": "object",
             "properties": {
                 "error": {},
@@ -69,12 +163,12 @@ const docTemplate = `{
                 "validationErrors": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/validation.ValidationError"
+                        "$ref": "#/definitions/github_com_paghapour_golang-clean-web-api_api_validations.ValidationError"
                     }
                 }
             }
         },
-        "validation.ValidationError": {
+        "github_com_paghapour_golang-clean-web-api_api_validations.ValidationError": {
             "type": "object",
             "properties": {
                 "message": {
@@ -90,6 +184,13 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "AuthBearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

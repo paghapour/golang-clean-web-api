@@ -8,6 +8,9 @@ import (
 	"github.com/paghapour/golang-clean-web-api/pkg/logging"
 )
 
+// @securityDefinitions.apiKey AuthBearer
+// @in header
+// @name Authorization
 func main() {
 
 
