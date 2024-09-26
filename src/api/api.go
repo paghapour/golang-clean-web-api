@@ -11,15 +11,20 @@ import (
 	validation "github.com/paghapour/golang-clean-web-api/api/validations"
 	"github.com/paghapour/golang-clean-web-api/config"
 	"github.com/paghapour/golang-clean-web-api/docs"
+	"github.com/paghapour/golang-clean-web-api/pkg/logging"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+
+var logger = logging.NewLogger(config.GetConfig())
+
 func InitServer(cfg *config.Config) {
 	r := gin.New()
 
-	RegisterValidator()
+	RegisterValidators()
 
+	r.Use(middlewares.DefaultStructuredLogger(cfg))
 	r.Use(middlewares.Cors(cfg))
 	r.Use(gin.Logger(), gin.Recovery() /*middlewares.TestMiddleware()*/, middlewares.LimitByRequest())
 
@@ -48,11 +53,17 @@ func RegisterRoutes(r *gin.Engine) {
 	}
 }
 
-func RegisterValidator() {
+func RegisterValidators() {
 	val, ok := binding.Validator.Engine().(*validator.Validate)
 	if ok {
-		val.RegisterValidation("mobile", validation.IranianMobileNumberValidator, true)
-		val.RegisterValidation("password", validation.PasswordValidator, true)
+		err := val.RegisterValidation("mobile", validation.IranianMobileNumberValidator, true)
+		if err != nil {
+			logger.Error(logging.Validation, logging.Startup, err.Error(), nil)
+		}
+		err = val.RegisterValidation("password", validation.PasswordValidator, true)
+		if err != nil {
+			logger.Error(logging.Validation, logging.Startup, err.Error(), nil)
+		}
 	}
 }
 
@@ -63,8 +74,6 @@ func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
 	docs.SwaggerInfo.BasePath = "/api"
 	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%s", cfg.Server.Port)
 	docs.SwaggerInfo.Schemes = []string{"http"}
-
-
-	//r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 }

@@ -20,7 +20,7 @@ type Config struct {
 }
 
 type LoggerConfig struct {
-	Filepath string
+	FilePath string
 	Encoding string
 	Level string
 	Logger string

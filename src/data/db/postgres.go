@@ -34,7 +34,7 @@ func InitDb(cfg *config.Config) error {
 	sqlDb.SetMaxOpenConns(cfg.Postgres.MaxOpenConns)
 	sqlDb.SetConnMaxLifetime(cfg.Postgres.ConnMaxLifetime * time.Minute)
 
-	logger.Info(logging.Postgres, logging.Startup, "DB connection established", nil)
+	logger.Info(logging.Postgres, logging.Startup, "DB connections established", nil)
 	return nil
 }
 

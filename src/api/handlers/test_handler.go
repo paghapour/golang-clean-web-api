@@ -33,7 +33,6 @@ func (h *TestHandler) Test(c *gin.Context) {
 }
 
 func (h *TestHandler) Users(c *gin.Context) {
-
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse("Users", true, 0))
 }
 
@@ -48,7 +47,6 @@ func (h *TestHandler) Users(c *gin.Context) {
 // @Success 200 {object} helper.BaseHttpResponse "Success"
 // @Failure 400 {object} helper.BaseHttpResponse "Failed"
 // @Router /v1/test/user/{id} [get]
-
 func (h *TestHandler) UserById(c *gin.Context) {
 
 	id := c.Param("id")
