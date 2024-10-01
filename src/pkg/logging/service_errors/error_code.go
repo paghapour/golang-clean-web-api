@@ -9,4 +9,8 @@ const (
 	OtpExists = "Otp exists"
 	OtpUsed = "Otp used"
 	OtpInvalid = "Otp invalid"
+
+	// User
+	EmailExists = "Email exists"
+	UsernameExists = "Username exists"
 )

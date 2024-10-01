@@ -12,6 +12,11 @@ var StatusCodeMapping = map[string]int{
 	service_errors.OtpUsed:    409,
 	service_errors.OtpInvalid: 400,
 	
+	// User
+	service_errors.EmailExists: 409,
+	service_errors.UsernameExists: 409,
+
+
 }
 
 
