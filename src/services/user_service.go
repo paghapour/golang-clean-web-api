@@ -34,6 +34,40 @@ func NewUserService(cfg *config.Config) *UserService {
 
 
 // login by username
+func (s *UserService) LoginByUsername(req dto.LoginByUsernameRequest) (*dto.TokenDetail, error){
+	var user models.User
+	err := s.database.
+		Model(&models.User{}).
+		Where("username = ?", req.Username).
+		Preload("Username", func (tx *gorm.DB) *gorm.DB {
+			return tx.Preload("UserRole")
+		}).
+		Find(&user).Error
+	if err != nil{
+		return nil, err
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
+	if err != nil{
+		return nil, err
+	}
+
+	tdto := tokenDto{UserId: user.Id, FirstName: user.FirstName, LastName: user.LastName,
+	Email: user.Email, MobileNumber: user.MobileNumber}
+
+	if len(*user.UserRoles) > 0{
+		 for _, ur := range *user.UserRoles{
+			tdto.Roles = append(tdto.Roles, ur.Role.Name)
+		 }
+	}
+
+	token, err := s.tokenService.GenerateToken(&tdto)
+	if err != nil{
+		return nil, err
+	}
+	return token, nil
+}
+
+
 
 // Register By username
 func (s *UserService) RegisterByUsername(req dto.RegisterUserByUsernameRequest) error{
